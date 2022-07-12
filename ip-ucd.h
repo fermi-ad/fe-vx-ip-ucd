@@ -195,10 +195,10 @@ namespace IPUCD {
 	    {
 	    }
 
-	    // Associates an incoming with a trigger. The parameter
-	    // `enable` enabled or disables the trigger level. `event`
-	    // is the event (0 to 255). `trigBit` is the trigger bit
-	    // (1 - 15).
+	    // Associates an incoming event with a trigger. The
+	    // parameter `enable` enables or disables the trigger
+	    // level. `event` is the event (0 to 255). `trigBit` is
+	    // the trigger bit (1 - 7).
 
 	    void adjustTclkReception(LockType const& lock, bool const enable,
 				     uint8_t const event,

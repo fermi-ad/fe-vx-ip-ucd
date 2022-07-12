@@ -301,7 +301,7 @@ namespace IPUCD {
 		a16.set<regFifoWrite>(lock, 0x00);
 		a16.set<regFifoClear>(lock, 0x00);
 
-		for (size_t ii = 0; ii < 256; ++ii)
+		for (size_t ii = 0; ii < regTrigger::RegEntries; ++ii)
 		    a32.set_element<regTrigger>(lock, ii, 0x00);
 
 		// Start collecting TCLK events.

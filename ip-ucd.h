@@ -75,6 +75,16 @@ namespace IPUCD {
 	    : public VME::Register<VME::A16, uint8_t, Offset, VME::Read, VME::NoWrite>
 	{};
 
+	// This is a common definition type for "config" registers;
+	// registers that change the behavior of the hardware. THey
+	// all are readable and writable but they all require a
+	// confirmed write.
+
+	template <typename T, size_t Offset>
+	struct ConfigReg
+	    : public VME::Register<VME::A16, T, Offset, VME::Read, VME::ConfirmWrite>
+	{};
+
 	// Define control register commands.
 
 	enum ControlCommand {
@@ -119,15 +129,15 @@ namespace IPUCD {
 
 	    // Define the registers in A16 space.
 
-	    typedef VME::Register<VME::A16, uint16_t, 0x40, VME::Read, VME::ConfirmWrite> regControl;
-	    typedef VME::Register<VME::A16, uint16_t, 0x42, VME::Read, VME::ConfirmWrite> regStatus;
-	    typedef VME::Register<VME::A16, uint8_t, 0x44, VME::Read, VME::ConfirmWrite> regMdatIntType;
-	    typedef VME::Register<VME::A16, uint8_t, 0x45, VME::Read, VME::ConfirmWrite> regMdatBufSwitch;
-	    typedef VME::Register<VME::A16, uint16_t, 0x46, VME::Read, VME::ConfirmWrite> regFtpTSLow;
-	    typedef VME::Register<VME::A16, uint16_t, 0x48, VME::Read, VME::ConfirmWrite> regFtpTSHigh;
-	    typedef VME::Register<VME::A16, uint8_t, 0x4a, VME::Read, VME::ConfirmWrite> regFifoWrite;
-	    typedef VME::Register<VME::A16, uint8_t, 0x4b, VME::Read, VME::ConfirmWrite> regFifoClear;
-	    typedef VME::Register<VME::A16, uint16_t, 0x4c, VME::Read, VME::ConfirmWrite> regFifoThreshold;
+	    typedef ConfigReg<uint16_t, 0x40> regControl;
+	    typedef ConfigReg<uint16_t, 0x42> regStatus;
+	    typedef ConfigReg<uint8_t, 0x44> regMdatIntType;
+	    typedef ConfigReg<uint8_t, 0x45> regMdatBufSwitch;
+	    typedef ConfigReg<uint16_t, 0x46> regFtpTSLow;
+	    typedef ConfigReg<uint16_t, 0x48> regFtpTSHigh;
+	    typedef ConfigReg<uint8_t, 0x4a> regFifoWrite;
+	    typedef ConfigReg<uint8_t, 0x4b> regFifoClear;
+	    typedef ConfigReg<uint16_t, 0x4c> regFifoThreshold;
 
 	    // Define registers in A32 space.
 

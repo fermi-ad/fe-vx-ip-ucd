@@ -133,8 +133,6 @@ namespace IPUCD {
 	    typedef ConfigReg<uint16_t, 0x42> regStatus;
 	    typedef ConfigReg<uint8_t, 0x44> regMdatIntType;
 	    typedef ConfigReg<uint8_t, 0x45> regMdatBufSwitch;
-	    typedef ConfigReg<uint16_t, 0x46> regFtpTSLow;
-	    typedef ConfigReg<uint16_t, 0x48> regFtpTSHigh;
 	    typedef ConfigReg<uint8_t, 0x4a> regFifoWrite;
 	    typedef ConfigReg<uint8_t, 0x4b> regFifoClear;
 	    typedef ConfigReg<uint16_t, 0x4c> regFifoThreshold;
@@ -186,6 +184,23 @@ namespace IPUCD {
 
 		return ((uint16_t) a16.get<regIdHigh>(lock) << 8) +
 		    (uint16_t) a16.get<regIdLow>(lock);
+	    }
+
+	    // Returns the 32-bit, microsecond timestamp. This value
+	    // is assembled from two 16-bit accesses, so we
+	    // encapsulate the access through this method. Since
+	    // accessing half of the timestamp isn't useful, the
+	    // register definitions are local to this function making
+	    // all 32-bit timestamp requests are done through ths
+	    // method.
+
+	    uint32_t getFtpTimestamp(LockType const& lock) {
+		typedef VME::Register<VME::A16, uint16_t, 0x46, VME::Read, VME::NoWrite> regFtpTSLow;
+		typedef VME::Register<VME::A16, uint16_t, 0x48, VME::Read, VME::NoWrite> regFtpTSHigh;
+
+		uint32_t const tmp = a16.get<regFtpTSLow>(lock);
+
+		return (tmp >> 4) + (a16.get<regFtpTSHigh>(lock) << 4);
 	    }
 
 	    // Sets the FIFO threshold value. Even though the register
